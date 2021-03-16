@@ -9,7 +9,7 @@
 - int, unsigned int, long long, unsigned long long
 - char, char[]
 
-**警告：**一旦使用`Fast_In`和`Fast_Out`接管文件流后，该文件流不可再次使用（如果接管`stdio`，则不能使用任何标准库中的IO函数）
+**警告:** 一旦使用`Fast_In`和`Fast_Out`接管文件流后，该文件流不可再次使用（如果接管`stdio`，则不能使用任何标准库中的IO函数）
 
 
 
