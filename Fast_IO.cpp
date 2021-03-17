@@ -1,17 +1,19 @@
 #include <cstdio>
 #include <cstring>
 #include <cctype>
+#include <cstdlib>
 
+template<size_t _s = 1ll << 23>
 struct Fast_In
 {
     #define _force_inline __attribute__((always_inline))
     #warning Fast_In will take control of the file. Use it on your own!!!
     FILE* _file;
     // 大约10M内存作为buff
-    const static size_t _size = 1 << 20;
+    const size_t _size ;
     char *_buf, *p1, *p2;
 
-    Fast_In(FILE* _f = stdin) : _file(_f)
+    Fast_In(FILE* _f = stdin) : _file(_f), _size(_s)
     {  
         _buf = new char[_size + 1];
         p1 = p2 = _buf;
@@ -43,13 +45,11 @@ struct Fast_In
 
     _force_inline void _fast_read_cstring(char* x)
     {
-        size_t _s_size = sizeof(x);
-        char* _s_end = x + _s_size;
         char ch = getc();
         while(!isalnum(ch)) {
             ch = getc();
         }
-        while(isalnum(ch) && x < _s_end) {
+        while(isalnum(ch)) {
             *(x++) = ch;
             ch = getc();
         }      
@@ -108,17 +108,18 @@ struct Fast_In
 
 };
 
+template<size_t _s = 1ll << 23>
 struct Fast_Out
 {
     #define _force_inline __attribute__((always_inline))
     #warning Fast_Out will take control of the file. Use it on your own!!!
     FILE* _file;
     // 大约10M内存作为buff
-    const static size_t _size = 1 << 20;
+    const size_t _size;
     char *_buf, *_int_buf;
     size_t p, ip;
 
-    Fast_Out(FILE* _f = stdout) : _file(_f), p(0), ip(0)
+    Fast_Out(FILE* _f = stdout) : _file(_f), _size(_s), p(0), ip(0)
     {  
         _buf = new char[_size + 64];
         _int_buf = new char[64];
@@ -144,10 +145,10 @@ struct Fast_Out
         _buf[p++] = x;
     }
 
-    _force_inline void _fast_print_cstring(char *x)
+    _force_inline void _fast_print_cstring(const char *x)
     {
         size_t _s_size = strlen(x);
-        if(_s_size > _size) puts("Error: Buffer size is not enough!!!"), exit(1);
+        if(_s_size > _size) puts("Error: Buffer size is not enough!!!"), ::std::exit(1);
         if ((p + _s_size) >= (1<<20)) flush();
         while(*x != '\0') {
             _buf[p++] = *(x++);
@@ -173,7 +174,7 @@ struct Fast_Out
         return *this;
     } 
 
-    _force_inline Fast_Out& operator<<(char* x)
+    _force_inline Fast_Out& operator<<(const char* x)
     {
         _fast_print_cstring(x);
         return *this;
