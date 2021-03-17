@@ -3,17 +3,15 @@
 #include <cctype>
 #include <cstdlib>
 
-template<size_t _s = 1ll << 23>
 struct Fast_In
 {
     #define _force_inline __attribute__((always_inline))
     #warning Fast_In will take control of the file. Use it on your own!!!
     FILE* _file;
-    // 大约10M内存作为buff
-    const size_t _size ;
+    static const size_t _size =  1ll << 23;
     char *_buf, *p1, *p2;
 
-    Fast_In(FILE* _f = stdin) : _file(_f), _size(_s)
+    Fast_In(FILE* _f = stdin) : _file(_f)
     {  
         _buf = new char[_size + 1];
         p1 = p2 = _buf;
@@ -27,7 +25,6 @@ struct Fast_In
 
     _force_inline char getc() 
     {
-        // 不使用内存映射最快的方法
         return p1 == p2 
             && ( p2 = (p1=_buf) + fread(_buf , 1, _size, _file), 
                  p1 == p2 ) 
@@ -108,18 +105,16 @@ struct Fast_In
 
 };
 
-template<size_t _s = 1ll << 23>
 struct Fast_Out
 {
     #define _force_inline __attribute__((always_inline))
     #warning Fast_Out will take control of the file. Use it on your own!!!
     FILE* _file;
-    // 大约10M内存作为buff
-    const size_t _size;
+    static const size_t _size = 1ll << 23;
     char *_buf, *_int_buf;
     size_t p, ip;
 
-    Fast_Out(FILE* _f = stdout) : _file(_f), _size(_s), p(0), ip(0)
+    Fast_Out(FILE* _f = stdout) : _file(_f), p(0), ip(0)
     {  
         _buf = new char[_size + 64];
         _int_buf = new char[64];
@@ -148,7 +143,7 @@ struct Fast_Out
     _force_inline void _fast_print_cstring(const char *x)
     {
         size_t _s_size = strlen(x);
-        if(_s_size > _size) puts("Error: Buffer size is not enough!!!"), ::std::exit(1);
+        if(_s_size > _size) puts("Error: Buffer size is not enough!!!"), exit(1);
         if ((p + _s_size) >= (1<<20)) flush();
         while(*x != '\0') {
             _buf[p++] = *(x++);
