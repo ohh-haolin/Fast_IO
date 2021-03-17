@@ -53,7 +53,7 @@ struct Fast_In
     }
 
     template<typename T>
-    _force_inline void _fast_read_integer(T& x, bool _signed = true)
+    _force_inline void _fast_read_integer(T& x)
     {
         x = 0; int f = 0; char ch = getc();
         while(!isdigit(ch)) {
@@ -64,7 +64,6 @@ struct Fast_In
             x = (x<<3) + (x<<1) + (ch - 48);
             ch = getc();
         }
-        if(_signed)  x = f ? -x : x;
     }
 
     _force_inline Fast_In& operator>>(char& x)
@@ -87,7 +86,7 @@ struct Fast_In
         
     _force_inline Fast_In& operator>>(unsigned int& x)
     {
-        _fast_read_integer(x, false);
+        _fast_read_integer(x);
         return *this;
     }   
 
@@ -99,7 +98,7 @@ struct Fast_In
     
     _force_inline Fast_In& operator>>(unsigned long long& x)
     {
-        _fast_read_integer(x, false);
+        _fast_read_integer(x);
         return *this;
     }
 
